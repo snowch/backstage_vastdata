@@ -31,6 +31,13 @@ import GroupIcon from '@material-ui/icons/People';
 import { NotificationsSidebarItem } from '@backstage/plugin-notifications';
 
 import StorageIcon from '@material-ui/icons/Storage';
+import DnsIcon from '@material-ui/icons/Dns';
+import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import TableChartIcon from '@material-ui/icons/TableChart';
+import FunctionsIcon from '@material-ui/icons/Functions';
+import DescriptionIcon from '@material-ui/icons/Description';
+import BuildIcon from '@material-ui/icons/Build';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
@@ -81,6 +88,14 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
 
         <SidebarItem icon={StorageIcon} to="vast-s3" text="VAST S3" />
+        <SidebarItem icon={DnsIcon} to="vast-db" text="VAST Database" />
+        <SidebarItem icon={DynamicFeedIcon} to="vast-db" text="VAST Kafka" />
+        <SidebarItem icon={StorageIcon} to="vast-db" text="VAST Vector DB" />
+        <SidebarItem icon={WhatshotIcon} to="vast-db" text="VAST Spark" />
+        <SidebarItem icon={TableChartIcon} to="vast-db" text="VAST Trino" />
+        <SidebarItem icon={FunctionsIcon} to="vast-db" text="VAST Functions" />
+        <SidebarItem icon={DescriptionIcon} to="vast-db" text="VAST Document RAG" />
+        <SidebarItem icon={BuildIcon} to="vast-db" text="VAST Agent Engine" />
         <SidebarSpacer />
 
         {/* End global nav */}
