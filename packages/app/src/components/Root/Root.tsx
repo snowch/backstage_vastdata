@@ -20,6 +20,7 @@ import {
   SidebarPage,
   SidebarScrollWrapper,
   SidebarSpace,
+  SidebarSpacer,
   useSidebarOpenState,
   Link,
 } from '@backstage/core-components';
@@ -28,6 +29,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import { MyGroupsSidebarItem } from '@backstage/plugin-org';
 import GroupIcon from '@material-ui/icons/People';
 import { NotificationsSidebarItem } from '@backstage/plugin-notifications';
+
+import StorageIcon from '@material-ui/icons/Storage';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
@@ -76,6 +79,10 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarItem icon={ExtensionIcon} to="api-docs" text="APIs" />
         <SidebarItem icon={LibraryBooks} to="docs" text="Docs" />
         <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
+
+        <SidebarItem icon={StorageIcon} to="vast-s3" text="VAST S3" />
+        <SidebarSpacer />
+
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>
