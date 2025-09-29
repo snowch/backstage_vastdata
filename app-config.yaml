@@ -39,7 +39,19 @@ integrations:
     - host: github.com
       token: ${GITHUB_TOKEN}
 
-proxy: {}
+vast:
+  host: ${VAST_HOST}
+  username: ${VAST_USERNAME}
+  password: ${VAST_PASSWORD}
+
+proxy:
+  '/vast-api':
+    target: https://172.200.204.2:443/api/latest
+    # The VAST API uses bearer tokens for authentication
+    headers:
+      Authorization: 'Bearer ${VAST_API_TOKEN}'
+    # The following line is important if your VAST instance uses a self-signed certificate
+    secure: false
 
 techdocs:
   builder: 'local'
