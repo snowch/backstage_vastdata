@@ -8,3 +8,7 @@ To start the app, run:
 yarn install
 yarn start
 ```
+
+Recording: 
+
+[![Watch the video demonstration](thumbnail.png)](Backstage_vastdata.mov)
