@@ -1,23 +1,14 @@
 app:
   title: Scaffolded Backstage App
-  # Update the baseUrl to your machine's IP address
   baseUrl: http://10.143.2.4:3000
 
 organization:
   name: My Company
 
 backend:
-  # Used for enabling authentication, secret is shared by all backend plugins
-  # See https://backstage.io/docs/auth/service-to-service-auth for
-  # information on the format
-  # auth:
-  #   keys:
-  #     - secret: ${BACKEND_SECRET}
-  # Update the baseUrl to your machine's IP address
   baseUrl: http://10.143.2.4:7007
   listen:
     port: 7007
-    # Uncomment the host directive and set it to '0.0.0.0' to allow external connections
     host: 0.0.0.0
   csp:
     connect-src: ["'self'", 'http:', 'https:']
@@ -27,9 +18,6 @@ backend:
       - http://10.143.2.4:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
-    headers:
-      - Content-Type
-      - Authorization
   database:
     client: better-sqlite3
     connection: ':memory:'
@@ -40,18 +28,18 @@ integrations:
       token: ${GITHUB_TOKEN}
 
 vast:
-  host: ${VAST_HOST}
+  host: 10.143.11.204
   username: ${VAST_USERNAME}
   password: ${VAST_PASSWORD}
 
 proxy:
   '/vast-api':
-    target: https://172.200.204.2:443/api/latest
-    # The VAST API uses bearer tokens for authentication
-    headers:
-      Authorization: 'Bearer ${VAST_API_TOKEN}'
-    # The following line is important if your VAST instance uses a self-signed certificate
+    target: https://10.143.11.204/api
+    allowedHeaders: ['Authorization']
+    changeOrigin: true
     secure: false
+    pathRewrite:
+      '^/api/proxy/vast-api/?': '/api/'
 
 techdocs:
   builder: 'local'
@@ -61,6 +49,9 @@ techdocs:
     type: 'local'
 
 auth:
+  # This section is now at the root level, which is correct.
+  publicRoutes:
+    - /api/proxy/vast-api
   providers:
     guest: {}
 
@@ -72,9 +63,6 @@ catalog:
     pullRequestBranchName: backstage-integration
   rules:
     - allow: [Component, System, API, Resource, Location]
-  authorization:
-    allow:
-      - permission: catalog.entity.read
   locations:
     - type: file
       target: ../../examples/entities.yaml
@@ -86,8 +74,6 @@ catalog:
       target: ../../examples/org.yaml
       rules:
         - allow: [User, Group]
-
-#kubernetes: {}
 
 permission:
   enabled: true

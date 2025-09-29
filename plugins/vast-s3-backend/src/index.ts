@@ -1,1 +1,2 @@
-export { vastS3Plugin as default } from './plugin';
+export { vastS3BackendPlugin as default } from './plugin';
+

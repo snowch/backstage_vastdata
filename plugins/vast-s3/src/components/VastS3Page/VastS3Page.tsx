@@ -18,7 +18,7 @@ export const VastS3Page = () => {
   const vastS3Api = useApi(vastS3ApiRef);
 
   const { value, loading, error } = useAsync(async () => {
-    return vastS3Api.getS3Views();
+    return vastS3Api.getS3Buckets();
   }, []);
 
   if (loading) {
@@ -28,25 +28,25 @@ export const VastS3Page = () => {
   }
 
   const columns: TableColumn[] = [
-    { title: 'ID', field: 'id' },
-    { title: 'Name', field: 'name' },
-    { title: 'Path', field: 'path' },
+    { title: 'Bucket', field: 'bucket' },
+    { title: 'Policy', field: 'policy' },
+    { title: 'S3 Versioning', field: 's3_versioning' },
   ];
 
   return (
     <Page themeId="tool">
-      <Header title="VAST S3 Views" subtitle="Manage your S3 views on VAST Data">
+      <Header title="VAST S3 Buckets" subtitle="Manage your S3 buckets on VAST Data">
         <HeaderLabel label="Owner" value="Team X" />
         <HeaderLabel label="Lifecycle" value="Alpha" />
       </Header>
       <Content>
-        <ContentHeader title="S3 Views">
-          <SupportButton>All your S3 views in one place.</SupportButton>
+        <ContentHeader title="S3 Buckets">
+          <SupportButton>All your S3 buckets in one place.</SupportButton>
         </ContentHeader>
         <Grid container spacing={3} direction="column">
           <Grid item>
             <Table
-              title="S3 Views on VAST"
+              title="S3 Buckets on VAST"
               options={{ search: false, paging: false }}
               columns={columns}
               data={value || []}

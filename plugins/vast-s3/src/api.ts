@@ -1,16 +1,15 @@
 import { createApiRef, DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 
-// Define the shape of a VAST S3 View
-export interface S3View {
-  id: number;
-  name: string;
-  path: string;
-  // Add any other properties you want to display from the VAST API
+// Define the shape of a VAST S3 Bucket
+export interface S3Bucket {
+  s3_versioning: boolean;
+  bucket: string;
+  policy: string;
 }
 
 // This is the interface for our API client
 export interface VastS3Api {
-  getS3Views(): Promise<S3View[]>;
+  getS3Buckets(): Promise<S3Bucket[]>;
 }
 
 // This creates a reference to our API that we can use to look it up
@@ -36,8 +35,8 @@ export class VastS3ApiClient implements VastS3Api {
     return this.discoveryApi.getBaseUrl('vast-s3');
   }
 
-  // This function fetches the list of S3 Views
-  async getS3Views(): Promise<S3View[]> {
+  // This function fetches the list of S3 Buckets
+  async getS3Buckets(): Promise<S3Bucket[]> {
     // 1. Get the URL for our backend plugin
     const backendUrl = await this.getBaseUrl();
 
@@ -49,16 +48,19 @@ export class VastS3ApiClient implements VastS3Api {
     const proxyUrl = await this.discoveryApi.getBaseUrl('proxy');
 
     // 4. Make the authenticated request to the VAST API via the proxy
-    const viewsResponse = await this.fetchApi.fetch(`${proxyUrl}/vast-api/views`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const bucketsResponse = await this.fetchApi.fetch(
+      `${proxyUrl}/vast-api/latest/views/?bucket__regex=^.%2B$&fields=bucket,policy,s3_versioning`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    if (!viewsResponse.ok) {
-      throw new Error(`Failed to fetch S3 views: ${viewsResponse.statusText}`);
+    if (!bucketsResponse.ok) {
+      throw new Error(`Failed to fetch S3 buckets: ${bucketsResponse.statusText}`);
     }
-    const data = await viewsResponse.json();
-    return data.results as S3View[]; // Assuming the views are in a 'results' property
+    const data = await bucketsResponse.json();
+    return data as S3Bucket[];
   }
 }

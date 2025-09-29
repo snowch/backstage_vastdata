@@ -3,27 +3,26 @@ import {
   createBackendPlugin,
 } from '@backstage/backend-plugin-api';
 import { createRouter } from './router';
-import { todoListServiceRef } from './services/TodoListService';
 
 /**
- * vastS3Plugin backend plugin
+ * The vastS3 backend plugin.
  *
  * @public
  */
-export const vastS3Plugin = createBackendPlugin({
+export const vastS3BackendPlugin = createBackendPlugin({
   pluginId: 'vast-s3',
   register(env) {
     env.registerInit({
       deps: {
-        httpAuth: coreServices.httpAuth,
         httpRouter: coreServices.httpRouter,
-        todoList: todoListServiceRef,
+        logger: coreServices.logger,
+        config: coreServices.rootConfig,
       },
-      async init({ httpAuth, httpRouter, todoList }) {
+      async init({ httpRouter, logger, config }) {
         httpRouter.use(
           await createRouter({
-            httpAuth,
-            todoList,
+            logger,
+            config,
           }),
         );
       },

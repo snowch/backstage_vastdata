@@ -16,7 +16,7 @@ export const VastS3Page = vastS3Plugin.provide(
   createRoutableExtension({
     name: 'VastS3Page',
     component: () =>
-      import('./components/ExampleComponent').then(m => m.ExampleComponent),
+      import('./components/VastS3Page/VastS3Page').then(m => m.VastS3Page),
     mountPoint: rootRouteRef,
   }),
 );
