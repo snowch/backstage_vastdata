@@ -3,7 +3,7 @@ app:
   baseUrl: http://10.143.2.4:3000
 
 organization:
-  name: My Company
+  name: Spotify
 
 backend:
   baseUrl: http://10.143.2.4:7007
