@@ -11,4 +11,4 @@ yarn start
 
 Recording: 
 
-[![Watch the video demonstration](thumbnail.png)](Backstage_vastdata.mov)
+![Watch the video demonstration](Backstage_vastdata.gif)
