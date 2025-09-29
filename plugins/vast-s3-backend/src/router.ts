@@ -85,9 +85,10 @@ export async function createRouter(
         });
       }
 
-      const buckets = await bucketsResponse.json();
-      logger.info('Successfully fetched buckets', { count: buckets.length });
-      return res.json(buckets);
+  const buckets = await bucketsResponse.json();
+  const limitedBuckets = Array.isArray(buckets) ? buckets.slice(0, 10) : buckets;
+  logger.info('Successfully fetched buckets', { count: Array.isArray(buckets) ? buckets.length : undefined, returned: Array.isArray(limitedBuckets) ? limitedBuckets.length : undefined });
+  return res.json(limitedBuckets);
       
     } catch (error: any) {
       logger.error('Error fetching S3 buckets', error);
