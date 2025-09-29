@@ -32,14 +32,13 @@ vast:
   username: ${VAST_USERNAME}
   password: ${VAST_PASSWORD}
 
-proxy:
-  '/vast-api':
-    target: https://10.143.11.204/api
-    allowedHeaders: ['Authorization']
-    changeOrigin: true
-    secure: false
-    pathRewrite:
-      '^/api/proxy/vast-api/?': '/api/'
+# Proxy is no longer needed - backend calls VAST directly
+# proxy:
+#   endpoints:
+#     '/vast-api':
+#       target: 'https://10.143.11.204'
+#       changeOrigin: true
+#       secure: false
 
 techdocs:
   builder: 'local'
@@ -49,13 +48,17 @@ techdocs:
     type: 'local'
 
 auth:
-  # This section is now at the root level, which is correct.
-  publicRoutes:
-    - /api/proxy/vast-api
   providers:
     guest: {}
-
-scaffolder: {}
+  # Allow unauthenticated access to VAST S3 plugin endpoints
+  externalAccess:
+    - type: static
+      options:
+        token: none
+        subject: anonymous
+      accessRestrictions:
+        - plugin: vast-s3
+          permission: use
 
 catalog:
   import:

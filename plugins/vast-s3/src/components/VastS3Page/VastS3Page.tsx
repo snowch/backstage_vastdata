@@ -1,18 +1,18 @@
-import React from 'react';
-import { Typography, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import {
-  InfoCard,
   Header,
   Page,
   Content,
   ContentHeader,
   HeaderLabel,
   SupportButton,
+  Progress,
+  Table,
+  TableColumn,
 } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
 import { vastS3ApiRef } from '../../api';
 import useAsync from 'react-use/lib/useAsync';
-import { Progress, Table, TableColumn } from '@backstage/core-components';
 
 export const VastS3Page = () => {
   const vastS3Api = useApi(vastS3ApiRef);

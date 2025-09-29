@@ -36,31 +36,31 @@ export class VastS3ApiClient implements VastS3Api {
   }
 
   // This function fetches the list of S3 Buckets
+  // Now it calls the backend directly, which handles VAST authentication
   async getS3Buckets(): Promise<S3Bucket[]> {
-    // 1. Get the URL for our backend plugin
+    console.log('Fetching S3 buckets from backend...');
+    
+    // Get the URL for our backend plugin
     const backendUrl = await this.getBaseUrl();
+    console.log('Backend URL:', backendUrl);
 
-    // 2. Fetch the bearer token from our new /token endpoint
-    const tokenResponse = await this.fetchApi.fetch(`${backendUrl}/token`);
-    const { token } = await tokenResponse.json();
+    // Call our new /buckets endpoint
+    // The backend handles all VAST authentication internally
+    const bucketsUrl = `${backendUrl}/buckets`;
+    console.log('Requesting buckets from:', bucketsUrl);
+    
+    const bucketsResponse = await this.fetchApi.fetch(bucketsUrl);
 
-    // 3. Get the URL for the Backstage proxy to the VAST API
-    const proxyUrl = await this.discoveryApi.getBaseUrl('proxy');
-
-    // 4. Make the authenticated request to the VAST API via the proxy
-    const bucketsResponse = await this.fetchApi.fetch(
-      `${proxyUrl}/vast-api/latest/views/?bucket__regex=^.%2B$&fields=bucket,policy,s3_versioning`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
+    console.log('Response status:', bucketsResponse.status, bucketsResponse.statusText);
 
     if (!bucketsResponse.ok) {
-      throw new Error(`Failed to fetch S3 buckets: ${bucketsResponse.statusText}`);
+      const errorBody = await bucketsResponse.text();
+      console.error('Failed to fetch buckets:', errorBody);
+      throw new Error(`Failed to fetch S3 buckets: ${bucketsResponse.status} ${bucketsResponse.statusText}`);
     }
+    
     const data = await bucketsResponse.json();
+    console.log('Successfully fetched buckets, count:', data?.length);
     return data as S3Bucket[];
   }
 }

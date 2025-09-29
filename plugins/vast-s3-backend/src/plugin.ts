@@ -9,7 +9,7 @@ import { createRouter } from './router';
  *
  * @public
  */
-export const vastS3BackendPlugin = createBackendPlugin({
+export const vastS3Plugin = createBackendPlugin({
   pluginId: 'vast-s3',
   register(env) {
     env.registerInit({
@@ -17,6 +17,7 @@ export const vastS3BackendPlugin = createBackendPlugin({
         httpRouter: coreServices.httpRouter,
         logger: coreServices.logger,
         config: coreServices.rootConfig,
+        // DON'T inject httpAuth - this makes the routes require authentication
       },
       async init({ httpRouter, logger, config }) {
         httpRouter.use(
